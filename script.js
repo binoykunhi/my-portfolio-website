@@ -30,7 +30,7 @@ function initializeNavigation() {
             navbar.style.background = 'rgba(255, 255, 255, 0.95)';
             navbar.style.boxShadow = 'none';
         }
-    });
+    }, { passive: true });
     
     // Active section highlighting
     function highlightActiveSection() {
@@ -53,9 +53,11 @@ function initializeNavigation() {
         });
     }
     
-    window.addEventListener('scroll', highlightActiveSection);
+    window.addEventListener('scroll', highlightActiveSection, { passive: true });
     highlightActiveSection(); // Call once on load
 }
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Smooth scrolling for navigation links
 function initializeSmoothScrolling() {
@@ -73,7 +75,7 @@ function initializeSmoothScrolling() {
                 
                 window.scrollTo({
                     top: offsetTop,
-                    behavior: 'smooth'
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth'
                 });
                 
                 // Close mobile menu if open
@@ -140,6 +142,8 @@ function initializeScrollAnimations() {
     }, observerOptions);
     
     // Initially hide elements that should animate in
+    if (prefersReducedMotion) return;
+
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     animatedElements.forEach(el => {
         el.style.opacity = '0';
@@ -205,7 +209,7 @@ const debouncedHighlight = debounce(function() {
 }, 10);
 
 // Replace the scroll event listener with debounced version
-window.addEventListener('scroll', debouncedHighlight);
+window.addEventListener('scroll', debouncedHighlight, { passive: true });
 
 // Add loading state for external links
 document.addEventListener('DOMContentLoaded', function() {

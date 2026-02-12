@@ -45,12 +45,19 @@ body {
     line-height: 1.6;
     color: var(--foreground);
     background-color: var(--background);
+    font-display: swap;
+}
+
+section {
+    content-visibility: auto;
+    contain-intrinsic-size: 600px;
 }
 
 .container {
     max-width: var(--container-max-width);
     margin: 0 auto;
     padding: 0 1.5rem;
+    width: 100%;
 }
 
 /* Typography */
@@ -879,4 +886,70 @@ body {
         color: black !important;
         background: white !important;
     }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .nav-container {
+        padding: 0.75rem 1rem;
+    }
+    .nav-brand {
+        font-size: 1rem;
+    }
+    .hero-title {
+        font-size: clamp(1.8rem, 6vw, 2.5rem);
+    }
+    .hero-description,
+    .about-text p,
+    .contact-description {
+        font-size: 1rem;
+    }
+    .card,
+    .skill-category,
+    .project-card,
+    .blog-card {
+        padding: 1.25rem;
+    }
+    .skills-grid,
+    .projects-grid,
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+    .skill-tags,
+    .tech-tags,
+    .blog-tags {
+        gap: 0.35rem;
+    }
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        padding: 0 1rem;
+    }
+    .nav-menu.active {
+        padding: 0.75rem 1rem;
+    }
+    .hero {
+        padding: 5rem 1rem 1.5rem;
+    }
+    .section-title,
+    .about-content h2 {
+        font-size: 1.75rem;
+    }
+}
+
+img, svg {
+    max-width: 100%;
+    height: auto;
 }
