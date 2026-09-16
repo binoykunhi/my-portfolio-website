@@ -1,0 +1,9 @@
+openai
+deepgram-sdk
+assemblyai
+google-cloud-speech
+google-cloud-storage
+boto3
+jiwer
+python-dotenv
+rich

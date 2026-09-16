@@ -55,7 +55,21 @@ Authentic articles from Medium profile covering:
 ### Contact Section
 Professional connection via LinkedIn with clear call-to-action
 
-## 🚀 Deployment
+## Local Development
+
+To test the Google Login feature locally, you must run the site on a local web server. Firebase Auth will not work if you open `index.html` directly (file:// protocol).
+
+1.  **Start the local server**:
+    ```bash
+    ./start_server.sh
+    ```
+    This will start a server at `http://localhost:8000` and open it in your browser.
+
+2.  **Firebase Configuration**:
+    - Ensure `http://localhost` is added to your **Authorized Domains** in the Firebase Console (Authentication > Settings > Authorized Domains).
+    - Ensure **Google** is enabled as a Sign-in provider.
+
+## Deployment
 
 ### GitHub Pages
 1. Upload all files to your GitHub repository
@@ -109,6 +123,53 @@ Update CSS custom properties in `:root` to change the color scheme:
 - Edit `styles.css` for visual changes
 - Modify animations and transitions
 - Adjust responsive breakpoints
+
+
+## 🔐 Authentication Setup
+
+This project uses **Firebase Authentication** (Google Sign-In) integrated via CDN to maintain the static nature of the site.
+
+### 1. Firebase Configuration
+
+1.  Create a project in the [Firebase Console](https://console.firebase.google.com/).
+2.  Enable **Authentication** and set up the **Google** sign-in provider.
+3.  Go to **Project Settings** -> **General** -> **Your apps** -> **SDK setup and configuration**.
+4.  Copy the `firebaseConfig` object.
+5.  Open `js/config.example.js`, paste your config, and rename the file to `js/config.js` (or create `js/config.js` with the content).
+
+**Example `js/config.js`:**
+
+```javascript
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+window.firebaseConfig = firebaseConfig;
+```
+
+### 2. Local Development
+
+Since this is a static site, you can serve it using any static file server.
+
+```bash
+# Using Python
+python3 -m http.server 8000
+
+# Using npm (if you have a package.json, otherwise npx)
+npx serve .
+```
+
+**Important**: Ensure your `localhost` (e.g., `http://localhost:8000`) is added to the **Authorized Domains** in your Firebase Console Authentication settings.
+
+### 3. Deployment
+
+1.  Ensure `js/config.js` is created with your production Firebase credentials.
+2.  Deploy all files (including `js/config.js`, `dashboard.html`, etc.) to your static hosting provider (GitHub Pages, Netlify, Vercel).
+3.  Add your production domain to the **Authorized Domains** in Firebase Console.
 
 ## 📧 Contact
 

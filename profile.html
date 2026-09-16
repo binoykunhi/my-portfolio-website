@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Binoy Chemmagate</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">Binoy Chemmagate</div>
+
+            <!-- Desktop Navigation -->
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#skills" class="nav-link">Skills</a>
+                <a href="index.html#projects" class="nav-link">Projects</a>
+                <a href="index.html#blog" class="nav-link">Blog</a>
+                <a href="experiments.html" class="nav-link" id="nav-experiments">Experiments</a>
+                <a href="https://linkedin.com/in/binoychemmagate" target="_blank" rel="noopener noreferrer"
+                    class="linkedin-btn">
+                    <i data-lucide="linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+            </div>
+
+            <!-- Auth Menu (Right Aligned) -->
+            <div class="auth-menu">
+                <!-- User Menu (Visible when logged in) -->
+                <div id="user-menu-container" class="user-menu-container" style="display: none;">
+                    <img id="nav-user-avatar" src="" alt="User" class="user-avatar-small">
+                    <span id="nav-user-name" class="user-name-small"></span>
+                    <i data-lucide="chevron-down"
+                        style="width: 16px; height: 16px; color: var(--muted-foreground);"></i>
+
+                    <!-- Dropdown -->
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <div class="dropdown-item" id="nav-profile-action">
+                            <i data-lucide="user"></i>
+                            <span>My Profile</span>
+                        </div>
+                        <div class="dropdown-item text-red" id="nav-logout-btn">
+                            <i data-lucide="log-out"></i>
+                            <span>Log out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="nav-toggle" id="nav-toggle">
+                <i data-lucide="menu" id="menu-icon"></i>
+                <i data-lucide="x" id="close-icon" style="display: none;"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <section class="dashboard-content">
+        <div class="container">
+            <div class="profile-form-container">
+                <div class="profile-header-summary">
+                    <img id="profile-page-avatar" src="" alt="Profile" class="profile-header-avatar">
+                    <div class="profile-header-info">
+                        <h2 id="profile-page-name">Loading...</h2>
+                        <p id="profile-page-email">...</p>
+                    </div>
+                </div>
+
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-input" id="input-firstname" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-input" id="input-lastname" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="input-email" disabled>
+                    </div>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Simple script to populate profile form
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkUserInterval = setInterval(() => {
+                if (window.authService && window.authService.user) {
+                    const user = window.authService.user;
+
+                    // Populate Header
+                    document.getElementById('profile-page-avatar').src = user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
+                    document.getElementById('profile-page-name').textContent = user.displayName;
+                    document.getElementById('profile-page-email').textContent = user.email;
+
+                    // Populate Form
+                    const names = (user.displayName || '').split(' ');
+                    document.getElementById('input-firstname').value = names[0] || '';
+                    document.getElementById('input-lastname').value = names.slice(1).join(' ') || '';
+                    document.getElementById('input-email').value = user.email;
+
+                    clearInterval(checkUserInterval);
+                }
+            }, 100);
+
+            // Mock Save
+            document.getElementById('profile-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Profile updated successfully! (Mock)');
+            });
+        });
+    </script>
+</body>
+
+</html>

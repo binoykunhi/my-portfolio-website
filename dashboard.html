@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Binoy Chemmagate</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+
+<body>
+    <!-- Dashboard Navigation -->
+    <nav class="navbar dashboard-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="nav-link home-link">
+                    <i data-lucide="home"></i>
+                    <span>Home</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <!-- User Menu (Visible when logged in) -->
+                <div id="user-menu-container" class="user-menu-container" style="display: none;">
+                    <img id="nav-user-avatar" src="" alt="User" class="user-avatar-small">
+                    <span id="nav-user-name" class="user-name-small"></span>
+                    <i data-lucide="chevron-down"
+                        style="width: 16px; height: 16px; color: var(--muted-foreground);"></i>
+
+                    <!-- Dropdown -->
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <div class="dropdown-item" id="nav-profile-action">
+                            <i data-lucide="user"></i>
+                            <span>My Profile</span>
+                        </div>
+                        <div class="dropdown-item text-red" id="nav-logout-btn">
+                            <i data-lucide="log-out"></i>
+                            <span>Log out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard-content">
+        <div class="container">
+            <div class="welcome-card">
+                <h1 class="welcome-title">Dashboard</h1>
+                <p class="welcome-subtitle">Welcome back!</p>
+                <!-- Content is blank as requested -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Modal -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="modal-header">
+                <h3 class="modal-title">My Profile</h3>
+            </div>
+            <div class="modal-body">
+                <img id="modal-avatar" src="" alt="Profile" class="modal-avatar">
+
+                <div class="modal-info-item">
+                    <div class="modal-label">Name</div>
+                    <div class="modal-value" id="modal-name"></div>
+                </div>
+
+                <div class="modal-info-item">
+                    <div class="modal-label">Email</div>
+                    <div class="modal-value" id="modal-email"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

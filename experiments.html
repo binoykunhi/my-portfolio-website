@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiments - Binoy Chemmagate</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css?v=4">
+    <script src="js/experiments.js?v=4"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">Binoy Chemmagate</div>
+
+            <!-- Desktop Navigation -->
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#skills" class="nav-link">Skills</a>
+                <a href="index.html#projects" class="nav-link">Projects</a>
+                <a href="index.html#blog" class="nav-link">Blog</a>
+                <a href="experiments.html" class="nav-link active" id="nav-experiments">Experiments</a>
+                <a href="https://linkedin.com/in/binoychemmagate" target="_blank" rel="noopener noreferrer"
+                    class="linkedin-btn">
+                    <i data-lucide="linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+            </div>
+
+            <!-- Auth Menu (Right Aligned) -->
+            <div class="auth-menu">
+                <!-- User Menu (Visible when logged in) -->
+                <div id="user-menu-container" class="user-menu-container" style="display: none;">
+                    <img id="nav-user-avatar" src="" alt="User" class="user-avatar-small">
+                    <span id="nav-user-name" class="user-name-small"></span>
+                    <i data-lucide="chevron-down"
+                        style="width: 16px; height: 16px; color: var(--muted-foreground);"></i>
+
+                    <!-- Dropdown -->
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <div class="dropdown-item" id="nav-profile-action">
+                            <i data-lucide="user"></i>
+                            <span>My Profile</span>
+                        </div>
+                        <div class="dropdown-item text-red" id="nav-logout-btn">
+                            <i data-lucide="log-out"></i>
+                            <span>Log out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="nav-toggle" id="nav-toggle">
+                <i data-lucide="menu" id="menu-icon"></i>
+                <i data-lucide="x" id="close-icon" style="display: none;"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Experiments Layout -->
+    <div class="experiments-layout">
+        <!-- Sidebar -->
+        <div class="experiments-sidebar">
+            <div class="experiments-sidebar-item active" data-experiment="asr">
+                <i data-lucide="mic"></i> ASR Benchmarking
+            </div>
+            <div class="experiments-sidebar-item" data-experiment="voice-ai">
+                <i data-lucide="cpu"></i> Voice AI Stack
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="experiments-content">
+            <!-- ASR Benchmarking Panel -->
+            <div class="experiment-panel active" id="asr-panel">
+                <div class="experiment-header">
+                    <h1 class="experiment-title">ASR Benchmarking</h1>
+                    <p class="experiment-description">Compare multiple ASR providers on the same audio sample.</p>
+                </div>
+
+                <!-- Status Bar (appears when running/completed) -->
+                <div class="status-bar" id="asr-status-bar" style="display: none;">
+                    <div class="status-header">
+                        <h3>Benchmark Progress</h3>
+                        <span class="status-percentage" id="asr-status-percentage">0%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="asr-progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="provider-status-list" id="asr-provider-status">
+                        <!-- Provider statuses will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Results Section (TOP - Primary Focus) -->
+                <div class="results-container" id="asr-results">
+                    <div class="results-placeholder">
+                        <i data-lucide="bar-chart-3"
+                            style="width: 48px; height: 48px; margin: 0 auto 1rem; color: var(--muted-foreground);"></i>
+                        <p>Run a benchmark to see results.</p>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="asr-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Running benchmark across providers...</p>
+                </div>
+
+                <!-- Configuration Section (BOTTOM) -->
+                <form id="asr-form">
+                    <!-- Provider Selection -->
+                    <div class="form-section">
+                        <h3>Select Providers</h3>
+                        <div class="provider-list-compact">
+                            <label class="provider-checkbox-compact">
+                                <input type="checkbox" name="provider" value="openai" checked>
+                                <span>OpenAI Whisper</span>
+                            </label>
+                            <label class="provider-checkbox-compact">
+                                <input type="checkbox" name="provider" value="deepgram">
+                                <span>Deepgram</span>
+                            </label>
+                            <label class="provider-checkbox-compact">
+                                <input type="checkbox" name="provider" value="assemblyai">
+                                <span>AssemblyAI</span>
+                            </label>
+                            <label class="provider-checkbox-compact">
+                                <input type="checkbox" name="provider" value="google-v1">
+                                <span>Google V1</span>
+                            </label>
+                            <label class="provider-checkbox-compact">
+                                <input type="checkbox" name="provider" value="google-v2-chirp2">
+                                <span>Google V2 Chirp 2</span>
+                            </label>
+                            <label class="provider-checkbox-compact">
+                                <input type="checkbox" name="provider" value="google-v2-chirp3">
+                                <span>Google V2 Chirp 3</span>
+                            </label>
+                            <label class="provider-checkbox-compact">
+                                <input type="checkbox" name="provider" value="aws">
+                                <span>AWS Transcribe</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Audio Upload -->
+                    <div class="form-section">
+                        <h3>Upload Audio File</h3>
+                        <div class="upload-zone" id="asr-upload-zone">
+                            <i data-lucide="upload"
+                                style="width: 48px; height: 48px; margin: 0 auto 1rem; color: var(--muted-foreground);"></i>
+                            <p id="asr-upload-text">Click to upload or drag and drop</p>
+                            <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-top: 0.5rem;">
+                                Supported: WAV, MP3, M4A, FLAC (max 50MB)
+                            </p>
+                            <input type="file" id="asr-file-input" accept=".wav,.mp3,.m4a,.flac" style="display: none;">
+                        </div>
+                        <div id="asr-file-info"
+                            style="margin-top: 1rem; padding: 0.75rem; background: var(--secondary); border-radius: 6px; display: none;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <i data-lucide="file-audio" style="width: 20px; height: 20px"></i>
+                                    <strong>Selected:</strong> <span id="asr-filename"></span>
+                                </div>
+                                <button type="button" id="asr-clear-file"
+                                    style="background: none; border: none; cursor: pointer; padding: 0.25rem;">
+                                    <i data-lucide="x"
+                                        style="width: 20px; height: 20px; color: var(--muted-foreground);"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Centered Run Button -->
+                    <div class="button-container-centered">
+                        <button type="submit" class="btn-run" id="asr-run-btn">
+                            <span id="asr-btn-text">Run ASR Benchmark</span>
+                            <span id="asr-btn-spinner" style="display: none;">Running...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Voice AI Stack Panel -->
+            <div class="experiment-panel" id="voice-ai-panel">
+                <div class="experiment-header">
+                    <h1 class="experiment-title">Voice AI Stack Benchmarking</h1>
+                    <p class="experiment-description">Benchmark complete Voice AI stacks (STT + LLM + TTS) using your
+                        configuration.</p>
+                </div>
+
+                <form id="voice-ai-form">
+                    <!-- Stack Configuration -->
+                    <div class="form-section">
+                        <h3>Configure Voice AI Stack</h3>
+                        <div class="form-group">
+                            <label class="form-label">Speech-to-Text Provider</label>
+                            <select class="form-input" name="stt-provider" required>
+                                <option value="openai-whisper">OpenAI Whisper</option>
+                                <option value="deepgram">Deepgram</option>
+                                <option value="google">Google</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">LLM Model</label>
+                            <select class="form-input" name="llm-model" required>
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                <option value="claude-3">Claude 3</option>
+                                <option value="gemini-pro">Gemini Pro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Text-to-Speech Provider</label>
+                            <select class="form-input" name="tts-provider" required>
+                                <option value="elevenlabs">ElevenLabs</option>
+                                <option value="openai-tts">OpenAI TTS</option>
+                                <option value="google">Google TTS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="form-section">
+                        <h3>Provide Input</h3>
+                        <div class="upload-zone" id="voice-ai-upload-zone">
+                            <i data-lucide="mic"
+                                style="width: 48px; height: 48px; margin: 0 auto 1rem; color: var(--muted-foreground);"></i>
+                            <p>Upload audio file for Voice AI pipeline</p>
+                            <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-top: 0.5rem;">
+                                Supported: WAV, MP3, M4A
+                            </p>
+                            <input type="file" id="voice-ai-file-input" accept=".wav,.mp3,.m4a" style="display: none;">
+                        </div>
+                        <div id="voice-ai-file-info" style="margin-top: 1rem; display: none;">
+                            <strong>Selected:</strong> <span id="voice-ai-filename"></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-run" id="voice-ai-run-btn">Run Voice AI Stack Benchmark</button>
+                </form>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="voice-ai-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Processing through Voice AI pipeline...</p>
+                </div>
+
+                <!-- Results -->
+                <div class="results-container" id="voice-ai-results">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script src="js/experiments.js?v=3"></script>
+</body>
+
+</html>
